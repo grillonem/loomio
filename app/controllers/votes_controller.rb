@@ -6,8 +6,13 @@ class VotesController < GroupBaseController
 
   def new
     @motion = Motion.find(params[:motion_id])
-    @vote = Vote.new
-    @vote.position = params[:position]
+    if @vote = @motion.most_recent_vote_of(current_user)
+    # if @motion.user_has_voted?(current_user)
+      redirect_to edit_motion_vote_url(motion_id: @motion.id, id: @vote.id)
+    else
+      @vote = Vote.new
+      @vote.position = params[:position]
+    end
   end
 
   def destroy

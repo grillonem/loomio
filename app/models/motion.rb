@@ -116,6 +116,10 @@ class Motion < ActiveRecord::Base
     votes.for_user(user).exists?
   end
 
+  def most_recent_vote_of(user)
+    votes.for_user(user).last
+  end
+
   def can_be_voted_on_by?(user)
     user && group.users.include?(user)
   end

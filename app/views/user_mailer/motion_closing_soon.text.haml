@@ -1,32 +1,13 @@
-= "#{t :proposal}:"
+= t(:"email.new_motion_created.author_proposed", author: @motion.author_name)
+\
 = @motion.name
-\
-= "#{t('email.view_proposal')}:"
-= motion_url(@motion)
-\
-= "#{t :group}:"
-= @motion.discussion.group.name
-\
-= "#{t :author}:"
-= @motion.author.name
-\
-= "#{t 'email.proposal_closing_soon.closes_in'}:"
-= time_ago_in_words(@motion.closing_at) + " (" + @motion.closing_at.localtime.strftime('%a %d %b %Y, %I:%M%p, %Z') + ")"
-\
-= "#{t :details}:"
-= @motion.description
+= motion_url(@motion)+'?from_email=true'
 \
 - if @motion.description.present?
-  = "#{t 'email.proposal_closing_soon.summary'}:"
   =@motion.description
 \
-- @motion.votes_for_graph.each do |results|
-  = results[0]
-\
-= t :engagement_on_open_proposal,
-      percent: @motion.percent_voted,
-      numerator: @motion.total_votes_count,
-      denominator: @motion.group_size_when_voting
+= t(:"email.proposal_closing_soon.closes_on")
+= @motion.closing_at.in_time_zone(TimeZoneToCity.convert @user.time_zone).strftime('%A %-d %b - %l:%M%P  (%Z %z)')
 \
 = "#{t :positions}:"
 \
